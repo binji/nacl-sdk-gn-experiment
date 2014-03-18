@@ -1,0 +1,6 @@
+declare_args() {
+  nacl_sdk_root = "/usr/local/google/home/binji/dev/chromium/src/out/pepper_35"
+  is_nacl = false
+}
+
+set_default_toolchain("//toolchain:dummy")

@@ -1,0 +1,150 @@
+toolchain_dir = nacl_sdk_root + "/toolchain"
+toolchain_x86_bin = toolchain_dir + "/" + os + "_x86_newlib/bin"
+toolchain_arm_bin = toolchain_dir + "/" + os + "_arm_newlib/bin"
+
+toolchain("dummy") {
+  tool("cc") {
+    command = "false dummy cc \$out"
+    description = "CC(dummy) \$out"
+  }
+
+  tool("cxx") {
+    command = "false dummy cxx \$out"
+    description = "CXX(dummy) \$out"
+  }
+
+  tool("alink") {
+    command = "false dummy ar \$out"
+    description = "AR(dummy) \$out"
+  }
+
+  tool("link") {
+    command = "false dummy link \$out"
+    description = "LINK(dummy) \$out"
+  }
+
+  tool("stamp") {
+    command = "false dummy stamp \$out"
+    description = "STAMP(dummy) \$out"
+  }
+}
+
+toolchain("nacl_i686") {
+  toolchain_args() {
+    is_nacl = true
+  }
+
+  cc = toolchain_x86_bin + "/i686-nacl-gcc"
+  cxx = toolchain_x86_bin + "/i686-nacl-g++"
+  ld = toolchain_x86_bin + "/i686-nacl-g++"
+  ar = toolchain_x86_bin + "/i686-nacl-ar"
+
+  tool("cc") {
+    command = "$cc -MMD -MF \$out.d \$defines \$includes \$cflags \$cflags_c -c \$in -o \$out"
+    description = "CC(i686) \$out"
+    depfile = "\$out.d"
+    deps = "gcc"
+  }
+
+  tool("cxx") {
+    command = "$cxx -MMD -MF \$out.d \$defines \$includes \$cflags \$cflags_cc -c \$in -o \$out"
+    description = "CXX(i686) \$out"
+    depfile = "\$out.d"
+    deps = "gcc"
+  }
+
+  tool("alink") {
+    command = "rm -f \$out && $ar rcs \$out \$in"
+    description = "AR(i686) \$out"
+  }
+
+  tool("link") {
+    command = "$ld \$ldflags -o \$out \$in \$libs"
+    description = "LINK(i686) \$out"
+  }
+
+  tool("stamp") {
+    command = "touch \$out"
+    description = "STAMP \$out"
+  }
+}
+
+toolchain("nacl_x86_64") {
+  toolchain_args() {
+    is_nacl = true
+  }
+
+  cc = toolchain_x86_bin + "/x86_64-nacl-gcc"
+  cxx = toolchain_x86_bin + "/x86_64-nacl-g++"
+  ld = toolchain_x86_bin + "/x86_64-nacl-g++"
+  ar = toolchain_x86_bin + "/x86_64-nacl-ar"
+
+  tool("cc") {
+    command = "$cc -MMD -MF \$out.d \$defines \$includes \$cflags \$cflags_c -c \$in -o \$out"
+    description = "CC(x86_64) \$out"
+    depfile = "\$out.d"
+    deps = "gcc"
+  }
+
+  tool("cxx") {
+    command = "$cxx -MMD -MF \$out.d \$defines \$includes \$cflags \$cflags_cc -c \$in -o \$out"
+    description = "CXX(x86_64) \$out"
+    depfile = "\$out.d"
+    deps = "gcc"
+  }
+
+  tool("alink") {
+    command = "rm -f \$out && $ar rcs \$out \$in"
+    description = "AR(x86_64) \$out"
+  }
+
+  tool("link") {
+    command = "$ld \$ldflags -o \$out \$in \$libs"
+    description = "LINK(x86_64) \$out"
+  }
+
+  tool("stamp") {
+    command = "touch \$out"
+    description = "STAMP \$out"
+  }
+}
+
+toolchain("nacl_arm") {
+  toolchain_args() {
+    is_nacl = true
+  }
+
+  cc = toolchain_arm_bin + "/arm-nacl-gcc"
+  cxx = toolchain_arm_bin + "/arm-nacl-g++"
+  ld = toolchain_arm_bin + "/arm-nacl-g++"
+  ar = toolchain_arm_bin + "/arm-nacl-ar"
+
+  tool("cc") {
+    command = "$cc -MMD -MF \$out.d \$defines \$includes \$cflags \$cflags_c -c \$in -o \$out"
+    description = "CC(arm) \$out"
+    depfile = "\$out.d"
+    deps = "gcc"
+  }
+
+  tool("cxx") {
+    command = "$cxx -MMD -MF \$out.d \$defines \$includes \$cflags \$cflags_cc -c \$in -o \$out"
+    description = "CXX(arm) \$out"
+    depfile = "\$out.d"
+    deps = "gcc"
+  }
+
+  tool("alink") {
+    command = "rm -f \$out && $ar rcs \$out \$in"
+    description = "AR(arm) \$out"
+  }
+
+  tool("link") {
+    command = "$ld \$ldflags -o \$out \$in \$libs"
+    description = "LINK(arm) \$out"
+  }
+
+  tool("stamp") {
+    command = "touch \$out"
+    description = "STAMP \$out"
+  }
+}

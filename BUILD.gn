@@ -1,0 +1,40 @@
+template("nacl_executable") {
+
+  # Save target_name so it can be used for the targets below.
+  target_exe = target_name
+
+  executable(target_exe) {
+    output_name = target_exe
+    output_extension = "nexe"
+  }
+
+  custom("${target_name}_nmf") {
+    script = nacl_sdk_root + "/tools/create_nmf.py"
+
+    sources = []
+    source_prereqs = [
+      "$root_out_dir/nacl_i686/$target_exe.nexe"
+      "$root_out_dir/nacl_x86_64/$target_exe.nexe"
+      "$root_out_dir/nacl_arm/$target_exe.nexe"
+    ]
+    outputs = [ "$target_out_dir/$target_exe.nmf" ]
+    deps = [
+      ":$target_exe(//toolchain:nacl_i686)",
+      ":$target_exe(//toolchain:nacl_x86_64)",
+      ":$target_exe(//toolchain:nacl_arm)",
+    ]
+    args = [
+      rebase_path(source_prereqs[0], root_build_dir),
+      rebase_path(source_prereqs[1], root_build_dir),
+      rebase_path(source_prereqs[2], root_build_dir),
+      "-o",
+      rebase_path(outputs[0], root_build_dir)
+    ]
+  }
+}
+
+nacl_executable("foo") {
+  sources = [
+    "foo.c"
+  ]
+}
